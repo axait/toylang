@@ -1,0 +1,7 @@
+/> Comment
+declare x p(x) input("Enter x: ",x) p(551+25) p("hello")
+p(x)
+input("Enter x: ",x)
+p(551+25)
+p("hello")
+p(x+5)
