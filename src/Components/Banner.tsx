@@ -4,41 +4,39 @@ import { motion } from "motion/react"
 const Banner = () => {
   return (
     <>
-        <div
+      <div
         className='
-        flex flex-col justify-center items-center
-        mt-10
-        w-[99vw] h-[200px]
+          flex flex-col justify-center items-center
+          mt-10
+          w-[99vw] h-[200px]
         '
-        >
-            <div
-              className="w-[400px] h-[120px] overflow-hidden rounded-xl"
-            >
-              <video
-                src={bannerVideo}
-                autoPlay
-                muted
-                playsInline
-                controls={false}
-                className="w-full h-full object-cover object-center"
-              ></video>
-            </div>
-            
-            <motion.p
-            initial={{ opacity: 0, y: 10 }}   // start hidden & shifted left
-            animate={{ opacity: 1, y: 0 }}      // fade in & move to original place
-            transition={{ duration: 1, ease: "easeOut" }}
-            className='
+      >
+        <div className="w-[400px] h-[120px] overflow-hidden rounded-xl">
+          <video
+            src={bannerVideo}
+            autoPlay
+            muted
+            playsInline
+            preload="auto"
+            controls={false}
+            className="w-full h-full object-cover object-center"
+          ></video>
+        </div>
+
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          className='
             text-[0.8rem] font-mono
             relative 
             mt-3
             text-center
-            '
-
-            // top-[28%] left-[50%]
-            // translate-x-[-50%]
-            >Exploring the beauty of programming and mathematics together.</motion.p>
-        </div>
+          '
+        >
+          Exploring the beauty of programming and mathematics together.
+        </motion.p>
+      </div>
     </>
   )
 }
