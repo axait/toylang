@@ -19,7 +19,6 @@ const Banner = () => {
                 autoPlay
                 muted
                 playsInline
-                loop
                 controls={false}
                 className="w-full h-full object-cover object-center"
               ></video>
@@ -32,7 +31,7 @@ const Banner = () => {
             className='
             text-[0.8rem] font-mono
             relative 
-            mt-2
+            mt-3
             text-center
             '
 
