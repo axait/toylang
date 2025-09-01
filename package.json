@@ -11,11 +11,13 @@
   },
   "dependencies": {
     "@monaco-editor/react": "^4.7.0",
+    "@reduxjs/toolkit": "^2.8.2",
     "@tailwindcss/vite": "^4.1.12",
     "motion": "^12.23.12",
     "prismjs": "^1.30.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-redux": "^9.2.0",
     "sass": "^1.91.0",
     "tailwindcss": "^4.1.12",
     "typed.js": "^2.1.0"
