@@ -1,0 +1,93 @@
+import { useState, useRef, useEffect } from "react";
+
+type ConsoleLine = { type: "output" | "input"; text: string };
+
+const MyConsole = ({output}) => {
+	
+	const [lines, setLines] = useState<ConsoleLine[]>([]);
+	const [currentInput, setCurrentInput] = useState("");
+	const [waiting, setWaiting] = useState(false);
+	const inputResolver = useRef<((value: string) => void) | null>(null);
+
+	// 👇 Function to print text
+	const print = (text: string) => {
+		setLines((prev) => [...prev, { type: "output", text }]);
+	};
+
+	// 👇 Function to ask for input (returns a Promise)
+	const readInput = (prompt = ""): Promise<string> => {
+		print(prompt);
+		setWaiting(true);
+		return new Promise((resolve) => {
+			inputResolver.current = resolve;
+		});
+	};
+
+	const consoleLineFormatter = (line: ConsoleLine) => {
+		if (line.text.trim() !== "") {
+
+			if (line.type === "input") {
+				return <span className="text-white">&gt;&nbsp;{line.text}</span>
+			}
+			else {
+				return <span>&gt;&nbsp;<span className="text-green-400">{line.text}</span></span>
+			}
+		}
+	}
+
+
+	const handleSubmit = (e: React.FormEvent) => {
+		e.preventDefault();
+		if (!waiting) return;
+
+		const value = currentInput.trim();
+		setLines((prev) => [...prev, { type: "input", text: value }]);
+		setCurrentInput("");
+		setWaiting(false);
+
+		if (inputResolver.current) {
+			inputResolver.current(value);
+			inputResolver.current = null;
+		}
+	};
+
+	// 👇 Example “program” flow
+	useEffect(() => {
+		const runProgram = async () => {
+			print("Enter x:");
+			const x = await readInput(); // waits for user
+			print(`You entered: ${x}`);
+			print("hello");
+			print(" ");
+			const y = await readInput("Enter y:");
+			print(`Second input: ${y}`);
+		};
+		runProgram();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	return (
+		<div className="bg-black p-4 font-mono min-h-[300px] overflow-y-auto rounded">
+			<h2 className="pb-2 font-bold font-mono" >Output:</h2>
+			{lines.map((line, i) => (
+				<div key={i}>
+					{consoleLineFormatter(line)}
+				</div>
+			))}
+
+			{waiting && (
+				<form onSubmit={handleSubmit} className="flex">
+					<span className="mr-2">&gt;</span>
+					<input
+						className="bg-black text-green-400 outline-none flex-1"
+						value={currentInput}
+						onChange={(e) => setCurrentInput(e.target.value)}
+						autoFocus
+					/>
+				</form>
+			)}
+		</div>
+	);
+};
+
+export default MyConsole;

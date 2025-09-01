@@ -1,6 +1,7 @@
 import './styles/App.scss'
-import CoderEditor from './Components/CodeEditor.tsx'
 import Banner from './Components/Banner.tsx'
+import CoderEditor from './Components/CodeEditor.tsx'
+import MyConsole from './Components/MyConsole.tsx'
 
 function App() {
 
@@ -8,6 +9,7 @@ function App() {
 		<>
 		<Banner/>
 		<CoderEditor/>
+		<MyConsole output={""}/>
 		{/* <br />
 		<br />
 		<br />
