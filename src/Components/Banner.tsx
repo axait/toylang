@@ -1,7 +1,36 @@
 import bannerVideo from '../assets/TL.mp4'
 import { motion } from "motion/react"
+import { useEffect, useRef } from 'react';
+import Typed from 'typed.js';
 
 const Banner = () => {
+  const el = useRef(null); // Ref to attach Typed.js to
+
+  useEffect(() => {
+    setTimeout(() => {
+
+      const typed = new Typed(el.current, {
+        strings: [
+          'Creating something new.',
+          'Exploring beauty.',
+          'Entertainment.',
+          'Learning.',
+          'Fun.',
+        ], // Array of strings to type
+        typeSpeed: 50, // Typing speed in milliseconds
+        backSpeed: 30, // Backspacing speed in milliseconds
+        loop: true, // Loop the animation
+        // Add other Typed.js options as needed
+      });
+
+      // Cleanup function to destroy Typed.js instance when component unmounts
+      return () => {
+        typed.destroy();
+      };
+
+    }, 1000);
+  }, []); // Empty dependency array ensures effect runs only once on mount
+
   return (
     <>
       <div
@@ -34,7 +63,8 @@ const Banner = () => {
             text-center
           '
         >
-          Exploring the beauty of programming and mathematics together.
+          A&nbsp;Language&nbsp;for&nbsp;
+          <span ref={el}>Nothing.</span>
         </motion.p>
       </div>
     </>
