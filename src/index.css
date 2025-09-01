@@ -22,3 +22,10 @@ body {
 p {
 	font-family: 'mono', monospace;
 }
+
+.random-code-btn:hover{
+	background-color: rgba(223, 97, 118, 0.239) !important;
+	color: rgb(225, 91, 114) !important;
+	/* color: white !important; */
+}
+
