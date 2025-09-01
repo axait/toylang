@@ -12,11 +12,17 @@ const Banner = () => {
         '
         >
             <div
-            className='
-            
-            '
+              className="w-[400px] h-[120px] overflow-hidden rounded-xl"
             >
-              <video src={bannerVideo} autoPlay muted playsInline controls={false}></video>
+              <video
+                src={bannerVideo}
+                autoPlay
+                muted
+                playsInline
+                loop
+                controls={false}
+                className="w-full h-full object-cover object-center"
+              ></video>
             </div>
             
             <motion.p
@@ -25,11 +31,13 @@ const Banner = () => {
             transition={{ duration: 1, ease: "easeOut" }}
             className='
             text-[0.8rem] font-mono
-            absolute 
-            top-[28%] left-[50%]
-            translate-x-[-50%]
+            relative 
+            mt-2
             text-center
             '
+
+            // top-[28%] left-[50%]
+            // translate-x-[-50%]
             >Exploring the beauty of programming and mathematics together.</motion.p>
         </div>
     </>
