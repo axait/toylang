@@ -62,7 +62,7 @@ const CodeEditor = () => {
         <div className="flex flex-col gap-4 mt-[2rem]">
             <PlaygroundTitle />
             <Editor
-                className="border-1 p-2 min-h-[400px] w-[80vw] m-auto"
+                className="border-1 p-2 min-h-[300px] w-[80vw] m-auto"
                 defaultLanguage="javascript"
                 defaultValue="// Write some code..."
                 value={code}
