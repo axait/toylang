@@ -4,79 +4,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      background: #111;
-      cursor: none;
-      overflow: hidden;
-    }
-
-    /* Custom cursor */
-    .cursor {
-      position: fixed;
-      width: 30px;
-      height: 30px;
-      background-color: rgba(255, 0, 0, 0);
-      border: 1px solid rgb(221, 255, 255);
-      border-radius: 50%;
-      pointer-events: none;
-      transform: translate(-44%, -44%);
-      transition: width 0.1s ease, height 0.1s ease, transform 0.1s ease;
-    }
-    .cursor-slow-comeback{
-      transition: width 0.2s ease, height 0.2s ease, transform 0.2s ease;
-    }
-    /* Enlarged when pressed */
-    .cursor.active {
-      width: 50px;
-      height: 50px;
-    }
-  </style>
   <title>ToyLang</title>
 </head>
 
 <body>
   <div id="root"></div>
-  <div class="cursor" id="cursor"></div>
   <script type="module" src="/src/main.tsx"></script>
-
-  <script>
-    const cursor = document.getElementById("cursor");
-
-    let mouseX = 0, mouseY = 0;
-    let cursorX = 0, cursorY = 0;
-
-    // Track mouse position
-    document.addEventListener("mousemove", (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    });
-
-    // Smooth cursor follow
-    function animate() {
-      cursorX += (mouseX - cursorX) * 0.15;
-      cursorY += (mouseY - cursorY) * 0.15;
-
-      cursor.style.left = cursorX + "px";
-      cursor.style.top = cursorY + "px";
-
-      requestAnimationFrame(animate);
-    }
-    animate();
-
-    // Mouse press/release events
-    document.addEventListener("mousedown", () => {
-      cursor.classList.remove("cursor-slow-comeback");
-      cursor.classList.add("active");
-    });
-    
-    document.addEventListener("mouseup", () => {
-      cursor.classList.add("cursor-slow-comeback");
-      cursor.classList.remove("active");
-    });
-  </script>
 </body>
 
 </html>
