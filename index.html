@@ -25,7 +25,9 @@
       transform: translate(-44%, -44%);
       transition: width 0.1s ease, height 0.1s ease, transform 0.1s ease;
     }
-
+    .cursor-slow-comeback{
+      transition: width 0.2s ease, height 0.2s ease, transform 0.2s ease;
+    }
     /* Enlarged when pressed */
     .cursor.active {
       width: 50px;
@@ -66,10 +68,12 @@
 
     // Mouse press/release events
     document.addEventListener("mousedown", () => {
+      cursor.classList.remove("cursor-slow-comeback");
       cursor.classList.add("active");
     });
-
+    
     document.addEventListener("mouseup", () => {
+      cursor.classList.add("cursor-slow-comeback");
       cursor.classList.remove("active");
     });
   </script>
