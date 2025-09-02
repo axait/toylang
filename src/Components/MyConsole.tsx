@@ -1,17 +1,27 @@
 import { useState, useRef, useEffect } from "react";
+import { type ConsoleLine } from "../store/types";
+// Redux
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { addConsoleLine } from "../store/appSlice.ts";
+import type { RootState } from "../store/store.ts";
 
-type ConsoleLine = { type: "output" | "input"; text: string };
+const MyConsole = () => {
 
-const MyConsole = ({output}) => {
-	
-	const [lines, setLines] = useState<ConsoleLine[]>([]);
+	const lines = useSelector((state: RootState) => state.app.consoleToDisplayLines);
+	// const [lines, setLines] = useState<ConsoleLine[]>([]);
 	const [currentInput, setCurrentInput] = useState("");
 	const [waiting, setWaiting] = useState(false);
 	const inputResolver = useRef<((value: string) => void) | null>(null);
 
+	const dispatch = useDispatch();
+
+	const setLines = (outputLine:ConsoleLine) => {
+		dispatch(addConsoleLine(outputLine));
+	}
 	// 👇 Function to print text
 	const print = (text: string) => {
-		setLines((prev) => [...prev, { type: "output", text }]);
+		setLines({ type: "output", text });
 	};
 
 	// 👇 Function to ask for input (returns a Promise)

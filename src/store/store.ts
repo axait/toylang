@@ -1,13 +1,13 @@
-// src/store/store.js
-import { configureStore } from '@reduxjs/toolkit';
-import counterReducer from './codeSlice';
+// src/store/store.ts
+import { configureStore } from "@reduxjs/toolkit";
+import appReducer from "./appSlice";
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
+    app: appReducer,
   },
 });
 
-// Optional: TypeScript users can infer RootState & AppDispatch
-// export type RootState = ReturnType<typeof store.getState>
-// export type AppDispatch = typeof store.dispatch
+// Optional: TypeScript helpers
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

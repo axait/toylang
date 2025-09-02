@@ -1,15 +1,33 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Editor, { useMonaco } from "@monaco-editor/react";
 import PlaygroundTitle from './PlaygroundTitle'
+// Redux
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { setEditorCode } from "../store/appSlice";
+import { addConsoleLine } from "../store/appSlice";
+import type { RootState } from "../store/store.ts";
+
 
 const CodeEditor = () => {
     const startCode = `/> Comment\ndeclare x\np(x)\ninput("Enter x: ",x)\np(551+25)\np("hello")\np(x+5)`
-    const [code, setCode] = useState(startCode);
     const monaco = useMonaco();
 
+    // to use These redux States.
+    const editorCode = useSelector((state: RootState) => state.app.editorCode);
+    const dispatch = useDispatch();
+
     useEffect(() => {
-        if (monaco) {
-            // ✅ Register new language
+        // To update editorCode:
+        dispatch(setEditorCode(startCode));
+        dispatch(addConsoleLine({type: "output", text: 'Good!'}));
+        
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[])
+        
+    useEffect(() => {
+            if (monaco) {
+                // ✅ Register new language
             monaco.languages.register({ id: "mylang" });
 
             // ✅ Tokenizer (simple grammar)
@@ -64,9 +82,9 @@ const CodeEditor = () => {
             <Editor
                 className="border-1 p-2 min-h-[300px] w-[80vw] m-auto mx-2"
                 defaultLanguage="javascript"
-                defaultValue="// Write some code..."
-                value={code}
-                onChange={(value) => setCode(value || "")}
+                defaultValue="/> Write Something..."
+                value={editorCode}
+                onChange={(value) => dispatch(setEditorCode((value || "")))}
                 theme="hc-black" // "vs-light" or "vs-dark"
                 options={{
                     fontSize: 14,
