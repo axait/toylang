@@ -20,24 +20,29 @@ const CodeEditor = () => {
     useEffect(() => {
         // To update editorCode:
         dispatch(setEditorCode(startCode));
-        dispatch(addConsoleLine({type: "output", text: 'Good!'}));
-        
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[])
-        
+        dispatch(addConsoleLine({ type: "output", text: 'Good!' }));
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
     useEffect(() => {
-            if (monaco) {
-                // ✅ Register new language
+        if (monaco) {
+            // ✅ Register new language
             monaco.languages.register({ id: "mylang" });
 
-            // ✅ Tokenizer (simple grammar)
+            // ✅ Tokenizer (Monarch syntax highlighting)
             monaco.languages.setMonarchTokensProvider("mylang", {
                 tokenizer: {
                     root: [
                         // keywords
                         [/\bdeclare\b/, "keyword-declare"],
+                        [/\bchange\b/, "keyword-change"],
+                        [/\bto\b/, "keyword-to"],
                         [/\binput\b/, "keyword-input"],
                         [/\bp\b/, "keyword-p"],
+
+                        // identifiers (variable names)
+                        [/[a-zA-Z_]\w*/, "identifier"],
 
                         // strings
                         [/"([^"\\]|\\.)*$/, "string.invalid"],
@@ -46,27 +51,48 @@ const CodeEditor = () => {
                         // numbers
                         [/\b\d+\b/, "number"],
 
-                        // comments
+                        // comments (your custom one)
                         [/\/>.*/, "comment"],
                     ],
                 },
             });
 
-            // ✅ Custom theme (black bg + colors)
+            // ✅ Basic language config (no errors for keywords)
+            monaco.languages.setLanguageConfiguration("mylang", {
+                comments: {
+                    lineComment: "/>",
+                },
+                brackets: [
+                    ["{", "}"],
+                    ["[", "]"],
+                    ["(", ")"],
+                ],
+                autoClosingPairs: [
+                    { open: '"', close: '"' },
+                    { open: "(", close: ")" },
+                    { open: "{", close: "}" },
+                    { open: "[", close: "]" },
+                ],
+            });
+
+            // ✅ Custom theme
             monaco.editor.defineTheme("mylang-dark", {
                 base: "vs-dark",
                 inherit: true,
                 rules: [
-                    { token: "keyword-declare", foreground: "ff5555", fontStyle: "bold" }, // red-ish
-                    { token: "keyword-input", foreground: "50fa7b", fontStyle: "bold" },   // green-ish
-                    { token: "keyword-p", foreground: "8be9fd", fontStyle: "bold" },       // cyan-ish
-                    { token: "string", foreground: "f1fa8c" },   // yellow
-                    { token: "number", foreground: "bd93f9" },   // purple
-                    { token: "comment", foreground: "555555", fontStyle: "italic" }, // dim gray
+                    { token: "keyword-declare", foreground: "e26bff", fontStyle: "light" },
+                    { token: "keyword-change", foreground: "e26bff", fontStyle: "light" },
+                    { token: "keyword-to", foreground: "e26bff", fontStyle: "light" }, // fixed typo
+                    { token: "keyword-input", foreground: "50fa7b", fontStyle: "light" },
+                    { token: "keyword-p", foreground: "8be9fd", fontStyle: "light" },
+                    { token: "string", foreground: "f1fa8c" },
+                    { token: "number", foreground: "bd93f9" },
+                    { token: "comment", foreground: "555555", fontStyle: "italic" },
+                    { token: "identifier", foreground: "ffffff" }, // variable names
                 ],
 
                 colors: {
-                    "editor.background": "#000000", // full black bg
+                    "editor.background": "#000000",
                     "editor.foreground": "#ffffff",
                 },
             });
@@ -76,16 +102,17 @@ const CodeEditor = () => {
     }, [monaco]);
 
 
+
     return (
         <div className="flex flex-col gap-4 mt-[2rem]">
             <PlaygroundTitle />
             <Editor
                 className="border-1 p-2 min-h-[300px] w-[80vw] m-auto mx-2"
-                defaultLanguage="javascript"
+                defaultLanguage="mylang"
                 defaultValue="/> Write Something..."
                 value={editorCode}
                 onChange={(value) => dispatch(setEditorCode((value || "")))}
-                theme="hc-black" // "vs-light" or "vs-dark"
+                theme="mylang-dark" // "vs-light" or "vs-dark"
                 options={{
                     fontSize: 14,
                     minimap: { enabled: false },
