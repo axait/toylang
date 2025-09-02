@@ -3,6 +3,7 @@ import Banner from './Components/Banner.tsx'
 import CoderEditor from './Components/CodeEditor.tsx'
 import MyConsole from './Components/MyConsole.tsx'
 import CustomCursor from './Components/CustomCursor.tsx'
+import Footer from './Components/Footer.tsx'
 // import TempFile from './Components/TempFile.tsx'
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
 		<CoderEditor/>
 		<MyConsole/>
 		<CustomCursor/>
+		<Footer/>
 		{/* <TempFile/> */}
 		</>
 	)
