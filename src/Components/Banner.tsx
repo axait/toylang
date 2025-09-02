@@ -8,6 +8,7 @@ const Banner = () => {
 
   useEffect(() => {
     setTimeout(() => {
+      // el.current.innerHTML = '';
 
       const typed = new Typed(el.current, {
         strings: [
@@ -20,6 +21,9 @@ const Banner = () => {
         typeSpeed: 50, // Typing speed in milliseconds
         backSpeed: 30, // Backspacing speed in milliseconds
         loop: true, // Loop the animation
+        shuffle:true, // will shuffle the strings
+        smartBackspace: true, // Enable smart backspacing
+        cursorChar: '┃', // Cursor character
         // Add other Typed.js options as needed
       });
 
@@ -28,7 +32,7 @@ const Banner = () => {
         typed.destroy();
       };
 
-    }, 1000);
+    }, 2000);
   }, []); // Empty dependency array ensures effect runs only once on mount
 
   return (
@@ -64,7 +68,7 @@ const Banner = () => {
           '
         >
           A&nbsp;Language&nbsp;for&nbsp;
-          <span ref={el}>Nothing.</span>
+          <span ref={el}>Nothing. ┃</span>
         </motion.p>
       </div>
     </>
