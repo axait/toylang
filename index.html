@@ -23,31 +23,13 @@
       border-radius: 50%;
       pointer-events: none;
       transform: translate(-44%, -44%);
+      transition: width 0.1s ease, height 0.1s ease, transform 0.1s ease;
     }
 
-    /* Click effect */
-    .click-effect {
-      position: fixed;
-      width: 20px;
-      height: 20px;
-      fill: white;
-      border: 1px solid rgb(255, 255, 255);
-      border-radius: 50%;
-      pointer-events: none;
-      transform: translate(-50%, -50%);
-      animation: ripple 0.8s ease-out forwards;
-    }
-
-    @keyframes ripple {
-      from {
-        opacity: 1;
-        transform: translate(-45%, -45%) scale(1);
-      }
-
-      to {
-        opacity: 0;
-        transform: translate(-45%, -45%) scale(3.5);
-      }
+    /* Enlarged when pressed */
+    .cursor.active {
+      width: 50px;
+      height: 50px;
     }
   </style>
   <title>ToyLang</title>
@@ -72,7 +54,7 @@
 
     // Smooth cursor follow
     function animate() {
-      cursorX += (mouseX - cursorX) * 0.15; // 0.15 = speed factor
+      cursorX += (mouseX - cursorX) * 0.15;
       cursorY += (mouseY - cursorY) * 0.15;
 
       cursor.style.left = cursorX + "px";
@@ -82,17 +64,13 @@
     }
     animate();
 
-    // Click effect
-    document.addEventListener("click", (e) => {
-      const effect = document.createElement("div");
-      effect.className = "click-effect";
-      effect.style.left = e.clientX + "px";
-      effect.style.top = e.clientY + "px";
-      document.body.appendChild(effect);
+    // Mouse press/release events
+    document.addEventListener("mousedown", () => {
+      cursor.classList.add("active");
+    });
 
-      effect.addEventListener("animationend", () => {
-        effect.remove();
-      });
+    document.addEventListener("mouseup", () => {
+      cursor.classList.remove("active");
     });
   </script>
 </body>

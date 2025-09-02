@@ -10,18 +10,6 @@ function App() {
 		<Banner/>
 		<CoderEditor/>
 		<MyConsole output={""}/>
-		{/* <br />
-		<br />
-		<br />
-			<div className="h-[100px] hero-content text-center">
-				<div className="max-w-md">
-					<h1 className="text-5xl font-bold">ToyLang</h1>
-					<p className="py-6">
-						A simple programming language interpreter.
-					</p>
-				</div>
-			</div>
-			<Coder /> */}
 		</>
 	)
 }
