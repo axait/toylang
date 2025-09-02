@@ -1,4 +1,5 @@
 import React from 'react'
+import { RandomCodeButton } from './RandomCode'
 
 const PlaygroundTitle = () => {
   return (
@@ -25,7 +26,9 @@ const PlaygroundTitle = () => {
       '
       >
         <button className="btn btn-error font-mono h-[35px]">Run</button>
-        <button className="btn btn-soft btn-error random-code-btn ml-2 h-[35px]">Random</button>
+        <RandomCodeButton
+        className=" btn btn-soft btn-error random-code-btn ml-2 h-[35px] "
+        >Random</RandomCodeButton>
       </div>
       
     </div>
