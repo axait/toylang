@@ -1,6 +1,7 @@
 // RandomCode.tsx
 import { useDispatch } from "react-redux";
 import { setEditorCode } from "../store/appSlice";
+import type { ReactNode } from "react";
 
 const randomCodeExamples: string[] = [
   `p("Hello")`,
@@ -11,7 +12,13 @@ const randomCodeExamples: string[] = [
   `declare num\ndeclare result\nchange num to 5\nchange result to num * 2\np(num + " x 2 = " + result)\nchange result to num * 3\np(num + " x 3 = " + result)\n`,
 ];
 
-export function RandomCodeButton({className}: {className?:string}) {
+export const RandomCodeButton = ({
+  className,
+  children,
+}: {
+  className?: string;
+  children?: ReactNode;
+}) => {
   const dispatch = useDispatch();
 
   const setRandomCode = () => {
@@ -19,5 +26,5 @@ export function RandomCodeButton({className}: {className?:string}) {
     dispatch(setEditorCode(randomCodeExamples[randomIndex]));
   };
 
-  return <button className={className} onClick={setRandomCode}>Random </button>;
+  return <button className={className} onClick={setRandomCode}>{children}</button>;
 }

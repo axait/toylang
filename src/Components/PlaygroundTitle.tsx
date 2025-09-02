@@ -1,4 +1,3 @@
-import React from 'react'
 import { RandomCodeButton } from './RandomCode'
 
 const PlaygroundTitle = () => {
