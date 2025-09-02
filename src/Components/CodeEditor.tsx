@@ -10,7 +10,7 @@ import type { RootState } from "../store/store.ts";
 
 
 const CodeEditor = () => {
-    const startCode = `/> Comment\ndeclare x\np(x)\ninput("Enter x: ",x)\np(551+25)\np("hello")\np(x+5)`
+    const startCode = `/> Comment\ndeclare x\np(x)\ninput("Enter x: ",x)\np("You entered: ",x)`
     const monaco = useMonaco();
 
     // to use These redux States.
@@ -20,7 +20,7 @@ const CodeEditor = () => {
     useEffect(() => {
         // To update editorCode:
         dispatch(setEditorCode(startCode));
-        dispatch(addConsoleLine({ type: "output", text: 'Good!' }));
+        dispatch(addConsoleLine({ type: "output", text: 'Great Work!' }));
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])

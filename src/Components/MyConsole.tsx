@@ -51,7 +51,7 @@ const MyConsole = () => {
 		if (!waiting) return;
 
 		const value = currentInput.trim();
-		setLines((prev) => [...prev, { type: "input", text: value }]);
+		setLines({ type: "input", text: value });
 		setCurrentInput("");
 		setWaiting(false);
 
@@ -67,10 +67,6 @@ const MyConsole = () => {
 			print("Enter x:");
 			const x = await readInput(); // waits for user
 			print(`You entered: ${x}`);
-			print("hello");
-			print(" ");
-			const y = await readInput("Enter y:");
-			print(`Second input: ${y}`);
 		};
 		runProgram();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -89,7 +85,8 @@ const MyConsole = () => {
 				<form onSubmit={handleSubmit} className="flex">
 					<span className="mr-2">&gt;</span>
 					<input
-						className="bg-black text-green-400 outline-none flex-1"
+						className="bg-black text-red-400 outline-none flex-1"
+						placeholder="Waiting for Input..."
 						value={currentInput}
 						onChange={(e) => setCurrentInput(e.target.value)}
 						autoFocus
