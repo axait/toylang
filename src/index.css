@@ -29,3 +29,18 @@ p {
 	/* color: white !important; */
 }
 
+
+/* Apply custom cursor globally and for all states */
+html, body, *, button, a, input,
+.disabled, a:disabled, input:disabled {
+	cursor: url('/whitecircle.svg'), auto;
+}
+
+button:hover, a:hover, input:hover, .hover:hover {
+	cursor: url('/whitecirclelarge.svg'), auto;
+}
+
+button:focus, a:focus, input:focus, .focus:focus {
+	cursor: url('/whitecirclelarge.svg'), auto;
+}
+
