@@ -1,57 +1,79 @@
 import bannerVideo from '../assets/TL.mp4'
+import bannerFallbackImage from '../assets/TL_fallback.png'
 import { motion } from "motion/react"
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Typed from 'typed.js';
 
 const Banner = () => {
-  const el = useRef(null); // Ref to attach Typed.js to
+  const el = useRef(null); // Ref for Typed.js
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [blocked, setBlocked] = useState(false);
 
+  // Typed.js setup
   useEffect(() => {
-    setTimeout(() => {
-      // el.current.innerHTML = '';
+    const typed = new Typed(el.current, {
+      strings: [
+        'Fix bugs.',
+        'Explore beauty.',
+        'Entertain yourself.',
+        'Learn always.',
+        'Have fun.',
+      ],
+      typeSpeed: 50,
+      backSpeed: 30,
+      loop: true,
+      shuffle: true,
+      smartBackspace: true,
+      cursorChar: '┃',
+    });
 
-      const typed = new Typed(el.current, {
-        strings: [
-          'Fix bugs. ',
-          'Explore beauty.',
-          'Entertain yourself.',
-          'Learn always.',
-          'Have fun.',
-        ], // Array of strings to type
-        typeSpeed: 50, // Typing speed in milliseconds
-        backSpeed: 30, // Backspacing speed in milliseconds
-        loop: true, // Loop the animation
-        shuffle:true, // will shuffle the strings
-        smartBackspace: true, // Enable smart backspacing
-        cursorChar: '┃', // Cursor character
-        // Add other Typed.js options as needed
-      });
+    return () => {
+      typed.destroy();
+    };
+  }, []);
 
-      // Cleanup function to destroy Typed.js instance when component unmounts
-      return () => {
-        typed.destroy();
-      };
+  // Check autoplay
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
 
-    }, 2000);
-  }, []); // Empty dependency array ensures effect runs only once on mount
+    const tryPlay = async () => {
+      try {
+        await video.play();
+        console.log("✅ Autoplay worked");
+      } catch (err) {
+        console.warn("❌ Autoplay blocked", err);
+        setBlocked(true);
+      }
+    };
+
+    tryPlay();
+  }, []);
 
   return (
-    <>
+    <div
+      className="
+        flex flex-col justify-center items-center
+        mt-10
+        w-[99vw] h-[200px]
+      "
+    >
       <div
-        className='
-          flex flex-col justify-center items-center
-          mt-10
-          w-[99vw] h-[200px]
-        '
-      >
-        <div
         className="
-        w-[300px] h-[100px]
-        md:mt-[15px]
-        overflow-hidden rounded-xl
+          w-[300px] h-[100px]
+          md:mt-[15px]
+          overflow-hidden rounded-xl
         "
-        >
+      >
+        {blocked ? (
+          <img
+            src={bannerFallbackImage}
+            alt="Fallback"
+            className="w-full h-full object-cover object-center"
+          />
+        ) : (
           <video
+            ref={videoRef}
             src={bannerVideo}
             autoPlay
             muted
@@ -60,26 +82,26 @@ const Banner = () => {
             controls={false}
             className="w-full h-full object-cover object-center"
           ></video>
-        </div>
-
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: "easeOut" }}
-          className='
-            text-[0.8rem] font-mono
-            relative 
-            mt-[10px] p-[px]
-            md:mt-[25px]
-            text-center
-          '
-        >
-          A&nbsp;Language&nbsp;to&nbsp;
-          <span ref={el}>Nothing. ┃</span>
-        </motion.p>
+        )}
       </div>
-    </>
-  )
-}
 
-export default Banner
+      <motion.p
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="
+          text-[0.8rem] font-mono
+          relative 
+          mt-[10px]
+          md:mt-[25px]
+          text-center
+        "
+      >
+        A&nbsp;Language&nbsp;to&nbsp;
+        <span ref={el}>Nothing. ┃</span>
+      </motion.p>
+    </div>
+  );
+};
+
+export default Banner;
