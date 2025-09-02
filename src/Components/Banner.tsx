@@ -12,11 +12,11 @@ const Banner = () => {
 
       const typed = new Typed(el.current, {
         strings: [
-          'Creating something new.',
-          'Exploring beauty.',
-          'Entertainment.',
-          'Learning.',
-          'Fun.',
+          'Fix bugs. ',
+          'Explore beauty.',
+          'Entertain yourself.',
+          'Learn always.',
+          'Have fun.',
         ], // Array of strings to type
         typeSpeed: 50, // Typing speed in milliseconds
         backSpeed: 30, // Backspacing speed in milliseconds
@@ -44,7 +44,13 @@ const Banner = () => {
           w-[99vw] h-[200px]
         '
       >
-        <div className="w-[400px] h-[120px] overflow-hidden rounded-xl">
+        <div
+        className="
+        w-[300px] h-[100px]
+        md:mt-[15px]
+        overflow-hidden rounded-xl
+        "
+        >
           <video
             src={bannerVideo}
             autoPlay
@@ -63,11 +69,12 @@ const Banner = () => {
           className='
             text-[0.8rem] font-mono
             relative 
-            mt-3
+            mt-[10px] p-[px]
+            md:mt-[25px]
             text-center
           '
         >
-          A&nbsp;Language&nbsp;for&nbsp;
+          A&nbsp;Language&nbsp;to&nbsp;
           <span ref={el}>Nothing. ┃</span>
         </motion.p>
       </div>
