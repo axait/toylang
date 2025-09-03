@@ -5,6 +5,7 @@ import '../styles/CustomCursor.scss'
 const CustomCursor = () => {
     const [isTouch, setIsTouch] = useState(false);
 
+
     useEffect(() => {
         const touchQuery = window.matchMedia("(pointer: coarse)");
         setIsTouch(touchQuery.matches);
@@ -51,7 +52,18 @@ const CustomCursor = () => {
             cursor?.classList.add("cursor-slow-comeback");
             cursor?.classList.remove("active");
         });
+
+        document.querySelectorAll('button, a, input').forEach(el => {
+            el.addEventListener("mouseover", () => {
+                cursor?.classList.add("cursor-enlarge-on-hover-over-clickable-elements");
+            });
+            el.addEventListener("mouseout", () => {
+                cursor?.classList.remove("cursor-enlarge-on-hover-over-clickable-elements");
+            });
+        });
+
     }, [])
+    
     return (
         <>
             {!isTouch && <div className="cursor" id="cursor"></div>}
