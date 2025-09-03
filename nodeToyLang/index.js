@@ -301,19 +301,25 @@ function IntermediateCodeGenerator(ast) {
         switch (statement.type) {
             case 'VariableDeclaration':
                 // return `\nlet ${statement.value};`;
-                return {action:"DeclareVar", value: statement.value};
-                
-                case 'CallExpression':
-                    // console.log("------CallExpression is active-------")
-                    if (statement.name === 'p') {
-                        // return `\nconsole.log(${statement.arguments.value});`;
-                        return {action:"p", value: statement.arguments.value};
-                        
-                    } else if (statement.name === 'input') {
-                        // commented this line bcz toylang is only going to run browser.
-                        // return `\ninput("${statement.arguments[0].value}",${statement.arguments[1].value});`;
-                        // return `\n${statement.arguments[1].value}=prompt("${statement.arguments[0].value}");`;
-                        return {action:"input", display: statement.arguments[0].value , varname:statement.arguments[1].value};
+                return { action: "DeclareVar", value: statement.value };
+
+            case 'CallExpression':
+                // console.log("------CallExpression is active-------")
+                if (statement.name === 'p') {
+                    // return `\nconsole.log(${statement.arguments.value});`;
+                    console.log("-----statement---------")
+                    console.log(statement)
+                    if (statement.arguments.type==='Identifier') {
+                        return { action: "p", type:'Identifier', value: statement.arguments.value  };
+                    } else {
+                        return { action: "p", type:'StringLiteral', value: statement.arguments.value  };
+                    }
+
+                } else if (statement.name === 'input') {
+                    // commented this line bcz toylang is only going to run browser.
+                    // return `\ninput("${statement.arguments[0].value}",${statement.arguments[1].value});`;
+                    // return `\n${statement.arguments[1].value}=prompt("${statement.arguments[0].value}");`;
+                    return { action: "input", display: statement.arguments[0].value, varname: statement.arguments[1].value };
 
                 }
 
@@ -338,7 +344,7 @@ function IntermediateCodeGenerator(ast) {
     // console.log(typeof objInInterCodeHandler)
     // console.log(objInInterCodeHandler.length)
     // console.log(objInInterCodeHandler[0].action)
-    
+
     return objInInterCodeHandler
 
 }
@@ -400,7 +406,7 @@ function runner(input) {
 }
 
 // Compiler
-function toObjectCompiler(input) {
+export function toObjectCompiler(input) {
     const processedCode = preProcessor(input)
     const tokens = Tokenizer(processedCode)
     const ast = Parser(tokens)
@@ -423,35 +429,32 @@ function codeCompiler(input) {
 // Test Code here
 
 function testing() {
-    
 
-const code = `
-declare name
-input("Enter your name: ", name)
-p("Welcome, ")
-p(name)
-p("!")
+
+    const code = `
+p("You entered: ",x)
 `
+// declare name
+// input("Enter your name: ", name)
+// p("Welcome, ")
+// p(name)
+// p("!")
 
-// ----REmoveMe--------
-// console.log(Tokenizer(code))
-// console.log(Parser(Tokenizer(code))[0]['arguments'])
-// --------------------
-const objCode = toObjectCompiler(code)
-console.log("--------------------Output:-------------------------")
-// console.log(objCode)
-for (const element of objCode) {
-    // console.log(element)
-    console.log(`${element.action}: ${element.value ? element.value : element.display ? element.display : element.varname ? element.varname : ''}`)
+    // ----REmoveMe--------
+    // console.log(Tokenizer(code))
+    // console.log(Parser(Tokenizer(code))[0]['arguments'])
+    // --------------------
+    const objCode = toObjectCompiler(code)
+    console.log("--------------------Output:-------------------------")
+    console.log(objCode)
+    for (const element of objCode) {
+        // console.log(element)
+        console.log(`${element.action}: ${element.value ? element.value : element.display ? element.display : element.varname ? element.varname : ''}`)
+    }
+    console.log("----------------------------------------------------")
+    // runner(objCode)
+
+
 }
-console.log("----------------------------------------------------")
-// runner(objCode)
 
-
-}
-
-testing()
-
-export { toObjectCompiler }
-
-
+// testing()

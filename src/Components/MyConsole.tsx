@@ -5,6 +5,8 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { addConsoleLine, clearConsole, setIsToRunCode } from "../store/appSlice.ts";
 import type { RootState } from "../store/store.ts";
+import { toObjectCompiler } from '../../nodeToyLang/index.js'
+
 
 const MyConsole = () => {
 
@@ -16,6 +18,8 @@ const MyConsole = () => {
 	const dispatch = useDispatch();
 	const isToRun = useSelector((state: RootState) => state.app.isToRunCode);
 	const consoleRef = useRef<HTMLDivElement | null>(null);
+
+	const editorCode = useSelector((state: RootState) => state.app.editorCode);
 
 	// 👇 Function to print text
 	const print = (text: string) => {
@@ -67,25 +71,55 @@ const MyConsole = () => {
 		}
 	};
 
+	// it will run the code which is in editor when isToRun is true.
 	useEffect(() => {
 		if (!isToRun) return;
 
 		const runProgram = async () => {
 			const variableStore: Record<string, unknown> = {};
-			print("Enter x:");
-			variableStore['x'] = await readInput(); // waits for user
-			print(`You entered: ${variableStore['x']}`);
-			// showError("Something went wrong!");
+			try {
+				const programObject = toObjectCompiler(editorCode);
+				for (const element of programObject) {
+					switch (element?.action) {
+						case "DeclareVar":
+							variableStore[element?.varname] = null; // waits for user
+							print("make var")
+							break;
+
+						case "p":
+							if (element?.type === "Identifier") {
+								print(variableStore[element?.value] as string)
+							} else {
+								print(element?.value)
+							}
+							break;
+
+						case "input":
+							{
+								print(element?.display)
+								variableStore[element?.varname] = await readInput(); // waits for user
+								break;
+							}
+
+						default:
+							showError("Error")
+							break;
+					}
+				}
+			} catch (error) {
+				showError(error as string)
+				return;
+			}
 		};
-		
+
 		// Scroll into view smoothly
 		consoleRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
 		dispatch(clearConsole());
 		dispatch(addConsoleLine({ type: "output", text: "Great Work!" }));
-		
+
 		runProgram();
 		dispatch(setIsToRunCode(false));
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isToRun]);
 
 
