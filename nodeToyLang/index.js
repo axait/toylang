@@ -202,7 +202,7 @@ function Parser(tokens) {
 
                     switch (argToken.type) {
                         case "STRING":
-                            argument = { type: "StringLiteral", value: `"${argToken.value}"` };
+                            argument = { type: "StringLiteral", value: `${argToken.value}` };
                             break;
                         case "variable":
                             argument = { type: "Identifier", value: argToken.value };
@@ -293,6 +293,56 @@ function Parser(tokens) {
     return ast;
 }
 
+// Intermediate Code Generator
+function IntermediateCodeGenerator(ast) {
+
+    function statementConverter(statement) {
+
+        switch (statement.type) {
+            case 'VariableDeclaration':
+                // return `\nlet ${statement.value};`;
+                return {action:"DeclareVar", value: statement.value};
+                
+                case 'CallExpression':
+                    // console.log("------CallExpression is active-------")
+                    if (statement.name === 'p') {
+                        // return `\nconsole.log(${statement.arguments.value});`;
+                        return {action:"p", value: statement.arguments.value};
+                        
+                    } else if (statement.name === 'input') {
+                        // commented this line bcz toylang is only going to run browser.
+                        // return `\ninput("${statement.arguments[0].value}",${statement.arguments[1].value});`;
+                        // return `\n${statement.arguments[1].value}=prompt("${statement.arguments[0].value}");`;
+                        return {action:"input", display: statement.arguments[0].value , varname:statement.arguments[1].value};
+
+                }
+
+            default:
+                // console.log('\n----------Unable---------------')
+                // console.log(statement)
+                break;
+
+        }
+
+    }
+
+
+    // console.log('\n\n\n----------CodeGenerator---------------')
+    let objInInterCodeHandler = []
+
+    for (const statement of ast) {
+        // console.log(statement)
+        objInInterCodeHandler.push(statementConverter(statement))
+    }
+
+    // console.log(typeof objInInterCodeHandler)
+    // console.log(objInInterCodeHandler.length)
+    // console.log(objInInterCodeHandler[0].action)
+    
+    return objInInterCodeHandler
+
+}
+
 // Code Generator
 function CodeGenerator(ast) {
 
@@ -350,7 +400,16 @@ function runner(input) {
 }
 
 // Compiler
-function compiler(input) {
+function toObjectCompiler(input) {
+    const processedCode = preProcessor(input)
+    const tokens = Tokenizer(processedCode)
+    const ast = Parser(tokens)
+    const objCode = IntermediateCodeGenerator(ast)
+    return objCode
+}
+
+// Compiler
+function codeCompiler(input) {
     const processedCode = preProcessor(input)
     const tokens = Tokenizer(processedCode)
     const ast = Parser(tokens)
@@ -367,22 +426,24 @@ function testing() {
     
 
 const code = `
-/> i am comment
-declare x p(x) input("Enter x: ",x) p(551+25) p("hello")
-p(x)
-input("Enter x: ",x)
-p(551+25)
-p("hello")
-p(x+5)
+declare name
+input("Enter your name: ", name)
+p("Welcome, ")
+p(name)
+p("!")
 `
 
 // ----REmoveMe--------
 // console.log(Tokenizer(code))
 // console.log(Parser(Tokenizer(code))[0]['arguments'])
 // --------------------
-const objCode = compiler(code)
+const objCode = toObjectCompiler(code)
 console.log("--------------------Output:-------------------------")
-console.log(objCode)
+// console.log(objCode)
+for (const element of objCode) {
+    // console.log(element)
+    console.log(`${element.action}: ${element.value ? element.value : element.display ? element.display : element.varname ? element.varname : ''}`)
+}
 console.log("----------------------------------------------------")
 // runner(objCode)
 
@@ -391,5 +452,6 @@ console.log("----------------------------------------------------")
 
 testing()
 
-export {compiler}
+export { toObjectCompiler }
+
 
