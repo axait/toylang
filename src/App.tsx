@@ -4,7 +4,7 @@ import CoderEditor from './Components/CodeEditor.tsx'
 import MyConsole from './Components/MyConsole.tsx'
 import CustomCursor from './Components/CustomCursor.tsx'
 import Footer from './Components/Footer.tsx'
-// import TempFile from './Components/TempFile.tsx'
+import TempFile from './Components/TempFile.tsx'
 
 function App() {
 
@@ -12,10 +12,10 @@ function App() {
 		<>
 		<Banner/>
 		<CoderEditor/>
-		<MyConsole/>
+		<MyConsole />
 		<CustomCursor/>
 		<Footer/>
-		{/* <TempFile/> */}
+		<TempFile/>
 		</>
 	)
 }

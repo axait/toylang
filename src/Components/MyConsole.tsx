@@ -3,25 +3,21 @@ import { type ConsoleLine } from "../store/types";
 // Redux
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { addConsoleLine } from "../store/appSlice.ts";
+import { addConsoleLine, setIsToRunCode } from "../store/appSlice.ts";
 import type { RootState } from "../store/store.ts";
 
 const MyConsole = () => {
 
 	const lines = useSelector((state: RootState) => state.app.consoleToDisplayLines);
-	// const [lines, setLines] = useState<ConsoleLine[]>([]);
 	const [currentInput, setCurrentInput] = useState("");
 	const [waiting, setWaiting] = useState(false);
 	const inputResolver = useRef<((value: string) => void) | null>(null);
 
 	const dispatch = useDispatch();
 
-	const setLines = (outputLine:ConsoleLine) => {
-		dispatch(addConsoleLine(outputLine));
-	}
 	// 👇 Function to print text
 	const print = (text: string) => {
-		setLines({ type: "output", text });
+		dispatch(addConsoleLine({ type: "output", text }));
 	};
 
 	// 👇 Function to ask for input (returns a Promise)
@@ -51,7 +47,8 @@ const MyConsole = () => {
 		if (!waiting) return;
 
 		const value = currentInput.trim();
-		setLines({ type: "input", text: value });
+		dispatch(addConsoleLine({ type: "input", text: value }));
+		
 		setCurrentInput("");
 		setWaiting(false);
 
@@ -69,6 +66,8 @@ const MyConsole = () => {
 			print(`You entered: ${x}`);
 		};
 		runProgram();
+		dispatch(setIsToRunCode(false));
+		
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
