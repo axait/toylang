@@ -3,7 +3,7 @@ import { Copyright } from 'lucide-react';
 const Footer = () => {
     return (
         <div
-            className='flex flex-row justify-center font-mono'
+            className='flex flex-row justify-center font-mono mb-[15px]'
             style={{ textAlign: "center" }}
         >
             <div className='flex flex-row h-[10]' ><Copyright height={17} className='mt-0.5' />{new Date().getFullYear()}</div>

@@ -107,7 +107,7 @@ const CodeEditor = () => {
         <div className="flex flex-col gap-4 mt-[2rem]">
             <PlaygroundTitle />
             <Editor
-                className="border-1 p-2 min-h-[300px] w-[80vw] m-auto mx-2"
+                className="border-1 p-2 min-h-[300px] w-[80vw] m-auto mx-3"
                 defaultLanguage="mylang"
                 defaultValue="/> Write Something..."
                 value={editorCode}

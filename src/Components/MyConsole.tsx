@@ -73,7 +73,7 @@ const MyConsole = () => {
 	}, []);
 
 	return (
-		<div className="bg-black p-4 font-mono min-h-[300px] overflow-y-auto rounded">
+		<div className="bg-black p-4 font-mono min-h-[200px] overflow-y-auto rounded">
 			<h2 className="pb-2 font-bold font-mono" >Output:</h2>
 			{lines.map((line, i) => (
 				<div key={i}>
