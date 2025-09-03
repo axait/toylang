@@ -1,6 +1,10 @@
 import { RandomCodeButton } from './RandomCode'
+import { useDispatch } from 'react-redux'
+import { setIsToRunCode } from '../store/appSlice'
 
 const PlaygroundTitle = () => {
+  const dispatch = useDispatch();
+
   return (
     <div
     className='
@@ -24,7 +28,11 @@ const PlaygroundTitle = () => {
       font-bold
       '
       >
-        <button className="btn btn-error font-mono h-[35px]">Run</button>
+        <button
+        className="btn btn-error font-mono h-[35px]"
+        onClick={() => dispatch(setIsToRunCode(true))}
+        >Run</button>
+
         <RandomCodeButton
         className=" btn btn-soft btn-error random-code-btn ml-2 h-[35px] "
         >Random</RandomCodeButton>

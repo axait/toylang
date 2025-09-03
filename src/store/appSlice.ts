@@ -5,11 +5,13 @@ import type { ConsoleLine } from "./types";
 interface AppState {
   consoleToDisplayLines: ConsoleLine[];
   editorCode: string;
+  isToRunCode: boolean,
 }
 
 const initialState: AppState = {
   consoleToDisplayLines: [],
   editorCode: "",
+  isToRunCode: false,
 };
 
 const appSlice = createSlice({
@@ -31,11 +33,17 @@ const appSlice = createSlice({
     clearEditorCode: (state) => {
       state.editorCode = "";
     },
+
+    // code runner states
+    setIsToRunCode: (state, action: PayloadAction<boolean>) => {
+      state.isToRunCode = action.payload;
+    },
+
   },
 });
 
 // Export actions
-export const { addConsoleLine, clearConsole, setEditorCode, clearEditorCode } = appSlice.actions;
+export const { addConsoleLine, clearConsole, setEditorCode, clearEditorCode, setIsToRunCode } = appSlice.actions;
 
 // Export reducer
 export default appSlice.reducer;
