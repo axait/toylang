@@ -1,5 +1,5 @@
 // src/store/types.ts
 export type ConsoleLine = {
-  type: "output" | "input";
+  type: "output" | "input" | "error";
   text: string;
 };

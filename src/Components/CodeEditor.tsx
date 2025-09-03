@@ -20,7 +20,7 @@ const CodeEditor = () => {
     useEffect(() => {
         // To update editorCode:
         dispatch(setEditorCode(startCode));
-        dispatch(addConsoleLine({ type: "output", text: 'Great Work!' }));
+        dispatch(addConsoleLine({ type: "output", text: 'Let\'s Run Some Code!' }));
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
