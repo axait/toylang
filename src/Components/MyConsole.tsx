@@ -83,7 +83,6 @@ const MyConsole = () => {
 					switch (element?.action) {
 						case "DeclareVar":
 							variableStore[element?.varname] = null; // waits for user
-							print("make var")
 							break;
 
 						case "p":

@@ -10,7 +10,7 @@ import type { RootState } from "../store/store.ts";
 
 
 const CodeEditor = () => {
-    const startCode = `/> Comment\ndeclare x\np(x)\ninput("Enter x: ",x)\np("You entered: ",x)`
+    const startCode = `/> Commentdeclare name\ninput("Enter your name: ", name)\np("Welcome, ")\np(name)\np("!")`
     const monaco = useMonaco();
 
     // to use These redux States.
