@@ -13,10 +13,10 @@ function App() {
 	return (
 		<>
 		<Banner/>
-		{/* <CoderEditor/> */}
-		{/* <MyConsole /> */}
+		<CoderEditor/>
+		<MyConsole />
 		<Docs/>
-		{/* <Footer/> */}
+		<Footer/>
 		<CustomCursor/>
 		{/* <TempFile/> */}
 		</>
