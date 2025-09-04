@@ -2,6 +2,13 @@ import type { DocArticleProps } from "./Components/DocArticle.tsx"
 
 export const DocumentationArray: DocArticleProps[] = [
     {
+        title: "Comments",
+        description: "use `\\>` to add comments.",
+        codeExample: "/> I am Comment.",
+        isNew: true,
+        tags: ["Comments"]
+    },
+    {
         title: "Variable",
         description: "A variable can be declare by using `declare` keyword.",
         codeExample: "declare name\ninput(\"Enter your name: \", name)\np(\"Welcome, \")\np(name)\n",
@@ -21,5 +28,5 @@ export const DocumentationArray: DocArticleProps[] = [
         codeExample: "p(\"Hello, World!\")",
         isNew: true,
         tags: ["print"]
-    }
+    },
 ]
