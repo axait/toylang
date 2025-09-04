@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { type ConsoleLine } from "../store/types";
+import Typed from "typed.js";
 // Redux
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -9,6 +10,9 @@ import { toObjectCompiler } from '../../nodeToyLang/index.js'
 
 
 const MyConsole = () => {
+
+	const inputRef = useRef<HTMLInputElement | null>(null);
+	const typedRef = useRef<Typed | null>(null);
 
 	const lines = useSelector((state: RootState) => state.app.consoleToDisplayLines);
 	const [currentInput, setCurrentInput] = useState("");
@@ -121,9 +125,26 @@ const MyConsole = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isToRun]);
 
+	// to animate placeholder of input field.
+	useEffect(() => {
+		if (inputRef.current) {
+			typedRef.current = new Typed(inputRef.current, {
+				strings: ["...Do Input Here...", "...Waiting for input...", "...Please Input here..."],
+				typeSpeed: 50,
+				backSpeed: 30,
+				backDelay: 1000,
+				loop: true,
+				attr: "placeholder", // 👈 tell Typed.js to update the placeholder
+			});
+		}
+
+		return () => {
+			typedRef.current?.destroy();
+		};
+	}, [waiting]);
 
 	return (
-		<div ref={consoleRef} className="bg-black p-4 font-mono min-h-[200px] overflow-y-auto rounded">
+		<div ref={consoleRef} className="bg-black p-4 font-mono min-h-[150px] overflow-y-auto rounded">
 			<h2 className="pb-2 font-bold font-mono" >Output:</h2>
 			{lines.map((line, i) => (
 				<div key={i}>
@@ -135,8 +156,9 @@ const MyConsole = () => {
 				<form onSubmit={handleSubmit} className="flex">
 					<span className="mr-2">&gt;</span>
 					<input
+						ref={inputRef}
 						className="bg-black text-amber-400 outline-none flex-1"
-						placeholder="Waiting for Input..."
+						placeholder="...Input here..."
 						value={currentInput}
 						onChange={(e) => setCurrentInput(e.target.value)}
 						autoFocus
