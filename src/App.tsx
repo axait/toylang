@@ -1,4 +1,5 @@
 import './styles/App.scss'
+import "prismjs/themes/prism-tomorrow.css"; 
 import Banner from './Components/Banner.tsx'
 import CoderEditor from './Components/CodeEditor.tsx'
 import MyConsole from './Components/MyConsole.tsx'
@@ -12,10 +13,10 @@ function App() {
 	return (
 		<>
 		<Banner/>
-		<CoderEditor/>
-		<MyConsole />
+		{/* <CoderEditor/> */}
+		{/* <MyConsole /> */}
 		<Docs/>
-		<Footer/>
+		{/* <Footer/> */}
 		<CustomCursor/>
 		{/* <TempFile/> */}
 		</>
