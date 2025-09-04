@@ -17,6 +17,17 @@ const CodeEditor = () => {
     const editorCode = useSelector((state: RootState) => state.app.editorCode);
     const dispatch = useDispatch();
 
+    function handleEditorMount(editor: any, monaco: any) {
+        // Disable context menu
+        editor.updateOptions({ contextmenu: false });
+
+        // Remove Command Palette (F1)
+        editor.addCommand(
+            monaco.KeyCode.F1,
+            () => null // do nothing
+        );
+    }
+
     useEffect(() => {
         // To update editorCode:
         dispatch(setEditorCode(startCode));
@@ -118,6 +129,7 @@ const CodeEditor = () => {
                     minimap: { enabled: false },
                     automaticLayout: true,
                 }}
+                onMount={handleEditorMount}
             />
 
         </div>
