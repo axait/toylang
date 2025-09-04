@@ -3,7 +3,7 @@ import '../styles/CustomPrism.scss';
 import "prismjs/components/prism-javascript"; // Load the language you want
 import { useEffect } from 'react';
 
-interface DocArticleProps {
+export interface DocArticleProps {
 	title: string
 	description: string
 	codeExample: string
@@ -19,7 +19,15 @@ const DocArticle = ({ title, description, codeExample, isNew = false, tags }: Do
 	});
 
 	return (
-		<div className="card w-96 border-[0.5px] doc-article-bg">
+		<div 
+		className="
+		card inline-block
+		w-[96%] md:w-[45vw] lg:w-[31vw]
+		border-[0.5px] border-[#878787]
+		doc-article-bg
+		my-5
+		"
+		>
 			<div className="card-body">
 				<h2 className="card-title">
 					{title}
