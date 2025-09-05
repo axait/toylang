@@ -10,9 +10,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@capacitor/android": "^7.4.3",
+    "@capacitor/cli": "^7.4.3",
+    "@capacitor/core": "^7.4.3",
+    "@ionic/react": "^8.7.3",
+    "@ionic/react-router": "^8.7.3",
     "@monaco-editor/react": "^4.7.0",
     "@reduxjs/toolkit": "^2.8.2",
     "@tailwindcss/vite": "^4.1.12",
+    "ionicons": "^8.0.13",
     "lucide-react": "^0.542.0",
     "motion": "^12.23.12",
     "prismjs": "^1.30.0",

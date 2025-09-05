@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { addConsoleLine, clearConsole, setIsToRunCode } from "../store/appSlice.ts";
 import type { RootState } from "../store/store.ts";
-import { toObjectCompiler } from '../../nodeToyLang/index.js'
+import { toObjectCompiler } from '../../nodeToyLang/index'
 
 
 const MyConsole = () => {
