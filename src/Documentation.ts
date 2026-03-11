@@ -5,28 +5,35 @@ export const DocumentationArray: DocArticleProps[] = [
         title: "Comments",
         description: "use `\\>` to add comments.",
         codeExample: "/> I am Comment.",
-        isNew: true,
+        isNew: false,
         tags: ["Comments"]
     },
     {
         title: "Variable",
         description: "A variable can be declare by using `declare` keyword.",
         codeExample: "declare name\ninput(\"Enter your name: \", name)\np(\"Welcome, \")\np(name)\n",
-        isNew: true,
+        isNew: false,
         tags: ["keyword", "input", "print"]
     },
     {
         title: "Input",
         description: "The input function is used to get user input.",
         codeExample: "declare name\ninput(\"Enter your name: \", name)\np(name)",
-        isNew: true,
+        isNew: false,
         tags: ["input"]
     },
     {
         title: "Print",
         description: "The p function is used to print output.",
         codeExample: "p(\"Hello, World!\")",
-        isNew: true,
+        isNew: false,
         tags: ["print"]
+    },
+    {
+        title: "Contribute",
+        description: "To contribute to this project, you can fork the repository and submit a pull request.",
+        codeExample: "It is Open Source.",
+        isNew: true,
+        tags: ["contribute", "open source"]
     },
 ]
