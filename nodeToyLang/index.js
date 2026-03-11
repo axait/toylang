@@ -3,15 +3,14 @@
 p number OP number
 
 */
-// process.env.DEBUG = 'true';
 
-const DEBUG = process.env.DEBUG === 'false';
+const DEBUG = process.env.DEBUG || false;
 /**
  * Logs the given argument to the console if the DEBUG environment variable is set to 'true'.
  * @param {any} arg - The argument to log.
  */
 function debug(arg) {
-    if (DEBUG) {
+    if (DEBUG===true) {
         console.log(arg)
     }
 }
@@ -69,7 +68,7 @@ function Tokenizer(input) {
             continue;
         }
 
-        if (char == "\n") {
+        if (char === "\n") {
             tokens.push({
                 type: "TERMINATOR",
                 value: ";",
@@ -290,18 +289,18 @@ function Parser(tokens) {
 
             default:
                 if (token.type === "STRING") {
-                    debug(`Unexpected STRING: ${token.value}`)
+                    throw new Error(`Unexpected STRING: ${token.value}`)
                 } else if (token.type === "variable") {
-                    debug(`Unexpected variable: ${token.value}`)
+                    throw new Error(`Unexpected variable: ${token.value}`)
                 } else if (token.type === "number") {
-                    debug(`Unexpected number: ${token.value}`)
+                    throw new Error(`Unexpected number: ${token.value}`)
                 } else if (token.type === "operator") {
-                    debug(`Unexpected operator: ${token.value}`)
+                    throw new Error(`Unexpected operator: ${token.value}`)
                 } else {
-                    debug(`Unexpected token: ${token.type}`)
+                    throw new Error(`Unexpected token: ${token.type}`)
                 }
-                cursor++;
-                return null;
+                
+                // cursor++;
         }
     }
 
@@ -469,9 +468,9 @@ function testing() {
 
 
     const code = `
-p("You entered: ")a
-p("You entered: a")asd
-as()
+p("You entered: ")/>a
+p("You entered: a")
+/>as()
 `
     // declare name
     // input("Enter your name: ", name)
@@ -496,6 +495,6 @@ as()
 
 }
 
-if (DEBUG) {
+if (DEBUG===true) {
     testing()
 }
