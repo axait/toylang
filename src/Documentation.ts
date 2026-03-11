@@ -5,7 +5,7 @@ export const DocumentationArray: DocArticleProps[] = [
         title: "Comments",
         description: "use `\\>` to add comments.",
         codeExample: "/> I am Comment.",
-        isNew: true,
+        isNew: false,
         tags: ["Comments"]
     },
     {
@@ -28,5 +28,12 @@ export const DocumentationArray: DocArticleProps[] = [
         codeExample: "p(\"Hello, World!\")",
         isNew: false,
         tags: ["print"]
+    },
+    {
+        title: "Contribute",
+        description: "To contribute to this project, you can fork the repository and submit a pull request.",
+        codeExample: "It is Open Source.",
+        isNew: true,
+        tags: ["contribute", "open source"]
     },
 ]
