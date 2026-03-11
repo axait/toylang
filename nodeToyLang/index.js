@@ -4,6 +4,17 @@ p number OP number
 
 */
 
+const DEBUG = process.env.DEBUG || false;
+/**
+ * Logs the given argument to the console if the DEBUG environment variable is set to 'true'.
+ * @param {any} arg - The argument to log.
+ */
+function debug(arg) {
+    if (DEBUG===true) {
+        console.log(arg)
+    }
+}
+
 // Pre-define-Functions
 function preDefinedFunctions() {
     // return `
@@ -57,7 +68,7 @@ function Tokenizer(input) {
             continue;
         }
 
-        if (char == "\n") {
+        if (char === "\n") {
             tokens.push({
                 type: "TERMINATOR",
                 value: ";",
@@ -251,7 +262,7 @@ function Parser(tokens) {
                 if (token.value === 'input') {
                     consume() // consime 'p'
                     let lParan = consume()
-                    if (lParan.type !== "LPARAN") throw new Error("Expected '(' after input");
+                    if (lParan.type !== "LPARAN") throw new Error("Expected '(' after input)");
 
                     let argument = [];
 
@@ -277,17 +288,36 @@ function Parser(tokens) {
                 return null;
 
             default:
-                return null;
+                if (token.type === "STRING") {
+                    throw new Error(`Unexpected STRING: ${token.value}`)
+                } else if (token.type === "variable") {
+                    throw new Error(`Unexpected variable: ${token.value}`)
+                } else if (token.type === "number") {
+                    throw new Error(`Unexpected number: ${token.value}`)
+                } else if (token.type === "operator") {
+                    throw new Error(`Unexpected operator: ${token.value}`)
+                } else {
+                    throw new Error(`Unexpected token: ${token.type}`)
+                }
+                
+                // cursor++;
         }
     }
 
     let ast = []
+    debug("while active")
+
     while (cursor < tokens.length) {
+        debug("statement parser active")
         let stmt = statementParser()
+        debug(stmt)
         if (stmt) ast.push(stmt)
+        if (!stmt) {
+            continue
+            // throw Error("Wrong Syntax. See Documentation")
+        }
 
     }
-
 
 
     return ast;
@@ -304,15 +334,15 @@ function IntermediateCodeGenerator(ast) {
                 return { action: "DeclareVar", value: statement.value };
 
             case 'CallExpression':
-                // console.log("------CallExpression is active-------")
+                // debug("------CallExpression is active-------")
                 if (statement.name === 'p') {
-                    // return `\nconsole.log(${statement.arguments.value});`;
-                    console.log("-----statement---------")
-                    console.log(statement)
-                    if (statement.arguments.type==='Identifier') {
-                        return { action: "p", type:'Identifier', value: statement.arguments.value  };
+                    // return `\ndebug(${statement.arguments.value});`;
+                    debug("-----statement---------")
+                    debug(statement)
+                    if (statement.arguments.type === 'Identifier') {
+                        return { action: "p", type: 'Identifier', value: statement.arguments.value };
                     } else {
-                        return { action: "p", type:'StringLiteral', value: statement.arguments.value  };
+                        return { action: "p", type: 'StringLiteral', value: statement.arguments.value };
                     }
 
                 } else if (statement.name === 'input') {
@@ -321,11 +351,13 @@ function IntermediateCodeGenerator(ast) {
                     // return `\n${statement.arguments[1].value}=prompt("${statement.arguments[0].value}");`;
                     return { action: "input", display: statement.arguments[0].value, varname: statement.arguments[1].value };
 
+                } else {
+                    throw new Error(`Unknown statement type: ${statement.type}`);
                 }
 
             default:
-                // console.log('\n----------Unable---------------')
-                // console.log(statement)
+                // debug('\n----------Unable---------------')
+                // debug(statement)
                 break;
 
         }
@@ -333,17 +365,17 @@ function IntermediateCodeGenerator(ast) {
     }
 
 
-    // console.log('\n\n\n----------CodeGenerator---------------')
+    // debug('\n\n\n----------CodeGenerator---------------')
     let objInInterCodeHandler = []
 
     for (const statement of ast) {
-        // console.log(statement)
+        // debug(statement)
         objInInterCodeHandler.push(statementConverter(statement))
     }
 
-    // console.log(typeof objInInterCodeHandler)
-    // console.log(objInInterCodeHandler.length)
-    // console.log(objInInterCodeHandler[0].action)
+    // debug(typeof objInInterCodeHandler)
+    // debug(objInInterCodeHandler.length)
+    // debug(objInInterCodeHandler[0].action)
 
     return objInInterCodeHandler
 
@@ -359,9 +391,9 @@ function CodeGenerator(ast) {
                 return `\nlet ${statement.value};`;
 
             case 'CallExpression':
-                // console.log("------CallExpression is active-------")
+                // debug("------CallExpression is active-------")
                 if (statement.name === 'p') {
-                    return `\nconsole.log(${statement.arguments.value});`;
+                    return `\ndebug(${statement.arguments.value});`;
 
                 } else if (statement.name === 'input') {
                     // commented this line bcz toylang is only going to run browser.
@@ -371,8 +403,8 @@ function CodeGenerator(ast) {
                 }
 
             default:
-                // console.log('\n----------Unable---------------')
-                // console.log(statement)
+                // debug('\n----------Unable---------------')
+                // debug(statement)
                 break;
 
         }
@@ -380,11 +412,11 @@ function CodeGenerator(ast) {
     }
 
 
-    // console.log('\n\n\n----------CodeGenerator---------------')
+    // debug('\n\n\n----------CodeGenerator---------------')
     let objInJs = ""
 
     for (const statement of ast) {
-        // console.log(statement)
+        // debug(statement)
         objInJs += statementConverter(statement)
     }
 
@@ -407,9 +439,13 @@ function runner(input) {
 
 // Compiler
 export function toObjectCompiler(input) {
+    debug('PreProcessor is active')
     const processedCode = preProcessor(input)
+    debug('Tokenizer is active')
     const tokens = Tokenizer(processedCode)
+    debug('Parser is active')
     const ast = Parser(tokens)
+    debug('IntermediateCodeGenerator is active')
     const objCode = IntermediateCodeGenerator(ast)
     return objCode
 }
@@ -432,29 +468,33 @@ function testing() {
 
 
     const code = `
-p("You entered: ",x)
+p("You entered: ")/>a
+p("You entered: a")
+/>as()
 `
-// declare name
-// input("Enter your name: ", name)
-// p("Welcome, ")
-// p(name)
-// p("!")
+    // declare name
+    // input("Enter your name: ", name)
+    // p("Welcome, ")
+    // p(name)
+    // p("!")
 
     // ----REmoveMe--------
-    // console.log(Tokenizer(code))
-    // console.log(Parser(Tokenizer(code))[0]['arguments'])
+    // debug(Tokenizer(code))
+    // debug(Parser(Tokenizer(code))[0]['arguments'])
     // --------------------
     const objCode = toObjectCompiler(code)
-    console.log("--------------------Output:-------------------------")
-    console.log(objCode)
+    debug("--------------------Output:-------------------------")
+    debug(objCode)
     for (const element of objCode) {
-        // console.log(element)
-        console.log(`${element.action}: ${element.value ? element.value : element.display ? element.display : element.varname ? element.varname : ''}`)
+        // debug(element)
+        debug(`${element.action}: ${element.value ? element.value : element.display ? element.display : element.varname ? element.varname : ''}`)
     }
-    console.log("----------------------------------------------------")
+    debug("----------------------------------------------------")
     // runner(objCode)
 
 
 }
 
-// testing()
+if (DEBUG===true) {
+    testing()
+}
